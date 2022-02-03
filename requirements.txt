@@ -1,0 +1,3 @@
+pyyaml==6.0
+python-telegram-bot==13.11
+yandexcloud==0.128.0
