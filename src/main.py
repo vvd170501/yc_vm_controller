@@ -5,6 +5,7 @@ import logging
 from dataclasses import dataclass
 from functools import wraps
 from traceback import format_exc
+from typing import Optional
 
 import yaml
 from grpc._channel import _InactiveRpcError
@@ -31,6 +32,7 @@ logger = logging.getLogger(__name__)  # log rotation?
 class Config:
     token: str
     whitelist: list[int]
+    notify_cid: Optional[int] = None
 
 
 def restricted_cmd(method):
@@ -145,6 +147,7 @@ class Bot:
             return
         context.bot.send_message(cid, 'VM is starting...')
         self._updater.dispatcher.run_async(self._wait_for_start, op, cid, inst_id)
+        self._notify(inst_id, 'started')
 
     @restricted_cmd
     def stop_vm(self, update: Update, context: CallbackContext):
@@ -166,6 +169,13 @@ class Bot:
             return
         context.bot.send_message(cid, 'VM is stopping...')
         self._updater.dispatcher.run_async(self._wait_for_stop, op, cid, inst_id)
+        self._notify(inst_id, 'stopped')
+
+    def _notify(self, inst_id: str, action: str):
+        cid = self._config.notify_cid
+        if cid is None:
+            return
+        self._updater.bot.send_message(cid, f'⚠️ `{inst_id}` was {action}', parse_mode='MarkdownV2')
 
     def _ip_str(self, ip: str) -> str:
         return f'IP: {ip}' if ip else 'No external IP'

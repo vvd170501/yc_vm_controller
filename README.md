@@ -8,4 +8,5 @@ docker-compose up -d
 
 **TODO**:
 - Improve README
+- Resolve instnces by name
 - Upload image to a registry

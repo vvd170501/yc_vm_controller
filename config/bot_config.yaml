@@ -1,2 +1,8 @@
 token: 1111111111:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-whitelist: [123456, 9999]  # telegram user IDs
+whitelist:  # telegram user IDs
+- 123456
+- 9999
+
+# Send notifications about executed commands to the specified user/group/channel.
+# Set to null to disable notifications
+notify_cid: 123456
