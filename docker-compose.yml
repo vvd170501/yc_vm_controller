@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  bot:
+    build: .
+    image: vm_controller
+    restart: on-failure:5
+    volumes:
+      - ${VMC_BOT_CONFIG:-./config}:/config
