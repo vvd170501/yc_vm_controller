@@ -140,6 +140,12 @@ class Bot:
         except Exception as e:
             context.bot.send_message(cid, get_error_str(e))
             return
+        if inst.status == Status.RUNNING:
+            context.bot.send_message(cid, 'VM is already running')
+            return
+        if inst.status == Status.PROVISIONING:
+            context.bot.send_message(cid, 'VM is already starting')
+            return
         try:
             op = start_instance(self._sdk, inst)
         except Exception as e:
@@ -161,6 +167,12 @@ class Bot:
             inst = get_instance(self._sdk, inst_id)
         except Exception as e:
             context.bot.send_message(cid, get_error_str(e))
+            return
+        if inst.status == Status.STOPPED:
+            context.bot.send_message(cid, 'VM is already stopped')
+            return
+        if inst.status == Status.STOPPING:
+            context.bot.send_message(cid, 'VM is already stopping')
             return
         try:
             op = stop_instance(self._sdk, inst)
