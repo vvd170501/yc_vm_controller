@@ -3,6 +3,6 @@ services:
   bot:
     build: .
     image: ghcr.io/vvd170501/yc_vm_controller
-    restart: on-failure:5
+    restart: unless-stopped
     volumes:
       - ${VMC_BOT_CONFIG:-./config}:/config
